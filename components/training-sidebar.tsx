@@ -3,8 +3,23 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { MODULES, getModuleHref, getTopicHref } from "@/lib/modules-data";
+import { MODULES, getTopicHref } from "@/lib/modules-data";
 import { useTraining } from "@/lib/training-context";
+import { ModuleIcon } from "@/components/module-icon";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarGroup,
+  useSidebar,
+} from "@/components/ui/sidebar";
 
 function CheckIcon({ className }: { className?: string }) {
   return (
@@ -25,14 +40,18 @@ export function TrainingSidebar() {
   const router = useRouter();
   const { isTopicCompleted, isModuleCompleted, overallProgress, resetProgress } =
     useTraining();
+  const { setOpenMobile, isMobile } = useSidebar();
 
   const { done: completedCount, total: totalTopics, percent } = overallProgress();
 
+  const handleNavigate = () => {
+    if (isMobile) setOpenMobile(false);
+  };
+
   return (
-    <aside className="w-72 shrink-0 border-r border-border bg-card/50 flex flex-col h-screen sticky top-0">
-      {/* Logo */}
-      <div className="p-6 border-b border-border">
-        <Link href="/module/1/topic/1" className="block">
+    <Sidebar collapsible="offcanvas">
+      <SidebarHeader className="p-6 border-b border-sidebar-border">
+        <Link href="/module/1/topic/1" className="block" onClick={handleNavigate}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/cdi-logo.svg"
@@ -40,109 +59,104 @@ export function TrainingSidebar() {
             className="h-14 w-auto"
           />
         </Link>
-      </div>
+      </SidebarHeader>
 
-      <nav className="flex-1 p-3 flex flex-col gap-0.5 overflow-y-auto">
-        {MODULES.map((mod) => {
-          const isExpanded = pathname.startsWith(`/module/${mod.id}`);
-          const modCompleted = isModuleCompleted(mod.id);
+      <SidebarContent className="p-2">
+        <SidebarGroup>
+          <SidebarMenu>
+            {MODULES.map((mod) => {
+              const isExpanded = pathname.startsWith(`/module/${mod.id}`);
+              const modCompleted = isModuleCompleted(mod.id);
 
-          return (
-            <div key={mod.id}>
-              {/* Module header */}
-              <Link
-                href={getTopicHref(mod.id, 1)}
-                className={cn(
-                  "flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors",
-                  isExpanded
-                    ? "bg-accent/50"
-                    : "hover:bg-accent/30"
-                )}
-              >
-                <div
-                  className={cn(
-                    "size-5 rounded flex items-center justify-center text-[9px] font-mono font-bold shrink-0",
-                    modCompleted
-                      ? "bg-cdi-green/20 text-cdi-green"
-                      : isExpanded
-                        ? "bg-cdi-green text-background"
-                        : "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {modCompleted ? <CheckIcon /> : mod.id}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p
-                    className={cn(
-                      "text-xs font-medium truncate",
-                      isExpanded ? "text-foreground" : "text-muted-foreground"
-                    )}
+              return (
+                <SidebarMenuItem key={mod.id}>
+                  <SidebarMenuButton
+                    render={<Link href={getTopicHref(mod.id, 1)} onClick={handleNavigate} />}
+                    isActive={isExpanded}
+                    className="py-2 h-auto"
                   >
-                    {mod.title}
-                  </p>
-                </div>
-              </Link>
+                    <div
+                      className={cn(
+                        "size-6 rounded flex items-center justify-center shrink-0",
+                        modCompleted
+                          ? "bg-cdi-green/20 text-cdi-green"
+                          : isExpanded
+                            ? "bg-cdi-green text-white"
+                            : "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {modCompleted ? <CheckIcon /> : <ModuleIcon name={mod.icon} className="size-3.5" />}
+                    </div>
+                    <span
+                      className={cn(
+                        "text-xs font-medium truncate",
+                        isExpanded ? "text-foreground" : "text-muted-foreground"
+                      )}
+                    >
+                      {mod.title}
+                    </span>
+                  </SidebarMenuButton>
 
-              {/* Expanded topics */}
-              {isExpanded && (
-                <div className="ml-4 pl-3 border-l border-border mt-0.5 mb-1 flex flex-col gap-0.5">
-                  {mod.topics.map((topic) => {
-                    const href = getTopicHref(mod.id, topic.id);
-                    const isActive = pathname === href;
-                    const completed = isTopicCompleted(mod.id, topic.id);
+                  {isExpanded && (
+                    <SidebarMenuSub>
+                      {mod.topics.map((topic) => {
+                        const href = getTopicHref(mod.id, topic.id);
+                        const isActive = pathname === href;
+                        const completed = isTopicCompleted(mod.id, topic.id);
 
-                    return (
-                      <Link
-                        key={topic.id}
-                        href={href}
-                        className={cn(
-                          "flex items-center gap-2 px-2.5 py-1.5 rounded-md transition-all text-xs",
-                          "hover:bg-accent/40",
-                          isActive && "bg-cdi-green/10 border border-cdi-green/20"
-                        )}
-                      >
-                        <div
-                          className={cn(
-                            "size-4 rounded flex items-center justify-center text-[8px] font-mono font-bold shrink-0",
-                            completed
-                              ? "bg-cdi-green/20 text-cdi-green"
-                              : isActive
-                                ? "bg-cdi-green text-background"
-                                : "bg-muted text-muted-foreground"
-                          )}
-                        >
-                          {completed ? (
-                            <CheckIcon className="size-2.5" />
-                          ) : (
-                            topic.id
-                          )}
-                        </div>
-                        <span
-                          className={cn(
-                            "truncate",
-                            isActive
-                              ? "text-cdi-green font-medium"
-                              : "text-muted-foreground"
-                          )}
-                        >
-                          {topic.title}
-                        </span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </nav>
+                        return (
+                          <SidebarMenuSubItem key={topic.id}>
+                            <SidebarMenuSubButton
+                              render={<Link href={href} onClick={handleNavigate} />}
+                              isActive={isActive}
+                              className={cn(
+                                "h-auto py-1.5",
+                                isActive &&
+                                  "bg-cdi-green/10 border border-cdi-green/20 text-cdi-green"
+                              )}
+                            >
+                              <div
+                                className={cn(
+                                  "size-4 rounded flex items-center justify-center text-[8px] font-mono font-bold shrink-0",
+                                  completed
+                                    ? "bg-cdi-green/20 text-cdi-green"
+                                    : isActive
+                                      ? "bg-cdi-green text-white"
+                                      : "bg-muted text-muted-foreground"
+                                )}
+                              >
+                                {completed ? (
+                                  <CheckIcon className="size-2.5" />
+                                ) : (
+                                  topic.id
+                                )}
+                              </div>
+                              <span
+                                className={cn(
+                                  "truncate text-xs",
+                                  isActive
+                                    ? "text-cdi-green font-medium"
+                                    : "text-muted-foreground"
+                                )}
+                              >
+                                {topic.title}
+                              </span>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        );
+                      })}
+                    </SidebarMenuSub>
+                  )}
+                </SidebarMenuItem>
+              );
+            })}
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
 
-      {/* Progress footer */}
-      <div className="p-4 border-t border-border">
+      <SidebarFooter className="p-4 border-t border-sidebar-border">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-mono text-muted-foreground">
-            Progress
-          </span>
+          <span className="text-xs font-mono text-muted-foreground">Progress</span>
           <span className="text-xs font-mono text-cdi-green">
             {completedCount}/{totalTopics} topics
           </span>
@@ -156,13 +170,14 @@ export function TrainingSidebar() {
         <button
           onClick={() => {
             resetProgress();
+            handleNavigate();
             router.push("/module/1/topic/1");
           }}
-          className="w-full px-3 py-2 rounded-lg text-xs font-mono text-muted-foreground hover:text-cdi-green hover:bg-cdi-green/5 hover:border-cdi-green/30 border border-border transition-all"
+          className="w-full px-3 py-2 rounded-lg text-xs font-mono text-muted-foreground hover:text-cdi-green hover:bg-cdi-green/5 hover:border-cdi-green/30 border border-sidebar-border transition-all"
         >
           Restart Training
         </button>
-      </div>
-    </aside>
+      </SidebarFooter>
+    </Sidebar>
   );
 }

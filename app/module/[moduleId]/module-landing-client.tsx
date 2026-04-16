@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { MODULES, getModule, getTopicHref } from "@/lib/modules-data";
 import { useTraining } from "@/lib/training-context";
+import { ModuleIcon } from "@/components/module-icon";
 
 export function ModuleLandingClient() {
   const params = useParams();
@@ -22,14 +23,21 @@ export function ModuleLandingClient() {
         <div className="absolute inset-0 bg-gradient-to-br from-cdi-green-light via-transparent to-cdi-teal-light pointer-events-none" />
         <div className="relative max-w-3xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
-            <Badge variant="secondary" className="font-mono text-[10px] uppercase tracking-widest">
-              Module {moduleId} of {MODULES.length}
-            </Badge>
-            {modComplete && (
-              <Badge className="bg-cdi-green/20 text-cdi-green border-cdi-green/30 font-mono text-[10px]">
-                Complete
-              </Badge>
-            )}
+            <div className="size-12 rounded-xl bg-cdi-green/10 border border-cdi-green/20 flex items-center justify-center text-cdi-green">
+              <ModuleIcon name={mod.icon} className="size-6" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="font-mono text-[10px] uppercase tracking-widest">
+                  Module {moduleId} of {MODULES.length}
+                </Badge>
+                {modComplete && (
+                  <Badge className="bg-cdi-green/20 text-cdi-green border-cdi-green/30 font-mono text-[10px]">
+                    Complete
+                  </Badge>
+                )}
+              </div>
+            </div>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-gradient-cdi mb-3">{mod.title}</h1>
           <p className="text-muted-foreground max-w-2xl leading-relaxed">{mod.description}</p>

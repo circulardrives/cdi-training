@@ -9,6 +9,7 @@ export interface ModuleDef {
   title: string;
   subtitle: string;
   description: string;
+  icon: string;
   topics: TopicDef[];
 }
 
@@ -19,6 +20,7 @@ export const MODULES: ModuleDef[] = [
     subtitle: "E-waste crisis & environmental impact",
     description:
       "Understand the environmental impact of the linear economy and the greenhouse gas footprint of data storage in the ICT sector.",
+    icon: "leaf",
     topics: [
       { id: 1, title: "The E-Waste Challenge", subtitle: "Linear economy & 62B kg of annual e-waste" },
       { id: 2, title: "Environmental Impact of Storage", subtitle: "HDD vs SSD carbon footprint profiles" },
@@ -32,6 +34,7 @@ export const MODULES: ModuleDef[] = [
     subtitle: "Reuse, economics & incentives",
     description:
       "Learn the principles of the circular economy, the economic imperatives of drive reuse, and how to measure and incentivize circular behaviors.",
+    icon: "recycle",
     topics: [
       { id: 1, title: "Principles of Circularity", subtitle: "From linear waste to circular value" },
       { id: 2, title: "The Economic Imperative", subtitle: "50-80% cost reduction via reuse" },
@@ -45,6 +48,7 @@ export const MODULES: ModuleDef[] = [
     subtitle: "Foundations of data security",
     description:
       "Grasp the foundational concepts of data sanitization, regulatory compliance, and risk-based decision-making.",
+    icon: "shield",
     topics: [
       { id: 1, title: "What is Sanitization?", subtitle: "Definitions and core concepts" },
       { id: 2, title: "The Target of Sanitization", subtitle: "All logical and physical data locations" },
@@ -58,6 +62,7 @@ export const MODULES: ModuleDef[] = [
     subtitle: "Clear, Purge & Destruct",
     description:
       "Master the IEEE 2883-2022 standard techniques to securely eliminate data while preserving hardware for reuse where possible.",
+    icon: "drive",
     topics: [
       { id: 1, title: "The Clear Method", subtitle: "Logical techniques for user-addressable space" },
       { id: 2, title: "The Purge Method", subtitle: "CE, Block Erase & Overwrite — the key to circularity" },
@@ -70,6 +75,7 @@ export const MODULES: ModuleDef[] = [
     subtitle: "Lifecycle, verification & trust",
     description:
       "Learn how to operationalize, verify, and document a media sanitization program with hardware-level trust guarantees.",
+    icon: "award",
     topics: [
       { id: 1, title: "The Data Sanitization Lifecycle", subtitle: "8-step lifecycle from classification to continuous improvement" },
       { id: 2, title: "Verification of Sanitization Outcomes", subtitle: "How to verify Clear, Purge, and Cryptographic Erase" },
