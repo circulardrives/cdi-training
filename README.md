@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CDI Training Portal
 
-## Getting Started
+Interactive training modules for the **Circular Drive Initiative (CDI)** — a non-profit promoting secure, sustainable media sanitization and drive reuse.
 
-First, run the development server:
+## Modules
+
+The certification program covers 5 modules with 19 topics total:
+
+1. **Introduction to Sustainability in Data Storage** — E-waste crisis, environmental impact of HDDs vs SSDs, GHG accounting, and the destruction problem
+2. **Circularity in the Storage Economy** — Circular economy principles, economic imperatives, GHG allocation incentives, and hardware interoperability
+3. **Introduction to Media Sanitization & Risk Assessment** — Sanitization definitions, target data, risk assessment framework, and regulatory landscape
+4. **IEEE 2883 and Media Sanitization Methods** — Clear, Purge (Cryptographic Erase, Block Erase, Overwrite), and Destruct methods
+5. **Building a Trustworthy Sanitization Program** — Sanitization lifecycle, verification, Certificate of Sanitization, and hardware root of trust
+
+## Features
+
+- Interactive topic pages with steppers, toggles, expandable cards, and comparison views
+- Progress tracking persisted in localStorage (visit-based completion)
+- Cross-module navigation with prev/next topic flow
+- Completion certificate generator with confetti and PNG download
+- Light theme using CDI brand colors (Simply Green, Foliage Green, Green Spruce, Real Teal, Lilac Gray)
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) 16 (App Router)
+- [shadcn/ui](https://ui.shadcn.com/) (base-ui primitives)
+- [Tailwind CSS](https://tailwindcss.com/) v4
+- TypeScript
+- Deployed on [Cloudflare Pages](https://pages.cloudflare.com/)
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+## Standards Referenced
 
-To learn more about Next.js, take a look at the following resources:
+- CDI Data Sanitization Best Practices
+- IEEE 2883-2022
+- NIST SP 800-88 Rev. 2
+- ISO/IEC 27040:2024
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Copyright Circular Drive Initiative. All rights reserved.
